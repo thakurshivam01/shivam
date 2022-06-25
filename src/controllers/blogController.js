@@ -18,7 +18,7 @@ const createBlog = async function (req, res) {
         if (!data.authorId.length === 0) {
             return res.status(404).send({ status: false, msg: "authorId is empty!" })
         }
-        if (objectValue(data.tags)) {
+        if (!objectValue(data.tags)) {
             return res.status(404).send({ status: false, msg: "tags are empty!" })
         }
         if (!data.category) {
@@ -60,7 +60,7 @@ const getAllBlogs = async function (req, res) {
     try {
         let tags = req.query.tags
 
-        if (tags.length === 0) { return res.status(404).send({ status: false, msg: "tags are empty!" }) }
+        // if (tags.length === 0) { return res.status(404).send({ status: false, msg: "tags are empty!" }) }
 
         //<==========when we are trying fetch data without tags...its showing error?==========================================>//  
         //<======================why .length is making the presence compulsory ?================================================>//
@@ -73,7 +73,7 @@ const getAllBlogs = async function (req, res) {
 
         let category = req.query.category
 
-        if (!category) { res.status(400).send({ status: false, msg: "Please input category!" }) }
+        if (category) { res.status(400).send({ status: false, msg: "Please input category!" }) }
 
         // if (category.length === 0) { return res.status(404).send({ status: false, msg: "category is empty!" }) }
 
