@@ -10,13 +10,10 @@ const objectValue = function (value) {
 
 const createBlog = async function (req, res) {
     try {
+        let data2=req.body.authorId
         let data = req.body
-
-        if (!data.authorId) {
-            return res.status(404).send({ status: false, msg: "authorId is required!" })
-        }
-        if (!isValidObjectId(data.authorId)) {
-            return res.status(400).send({ status: false, msg: "authorId is invalid!" })
+        let validAuthor=await blogModel.findById({_id:data2})
+    if(!validAuthor){ return res.status(404).send({ status: false, msg: "authorId is invalid!" })
         }
         // else if (!objectValue(data.tags)) {
         //     return res.status(404).send({ status: false, msg: "tags are empty!" })
@@ -43,52 +40,6 @@ const createBlog = async function (req, res) {
     }
 }
 
-// const createBlog = async function (req, res) {
-
-//     try {
-//         let data = req.body
-
-//         if (data.authorId) {
-//             if (isValidObjectId(data.authorId)) {
-//                 if (objectValue(data.tags)) {
-//                     if (data.category) {
-//                         if (objectValue(data.category)) {
-//                             if (objectValue(data.subcategory)) {
-//                                 if (Object.keys(data).length != 0) {
-//                                     let savedData = await blogModel.create(data)
-//                                     return res.status(201).send({ msg: savedData })
-//                                 }
-//                                 else return res.status(400).send({ msg: "BAD REQUEST" })
-//                             }
-//                             else return res.status(404).send({ status: false, msg: "subcategory is empty!" })
-//                         }
-//                         else return res.status(404).send({ status: false, msg: "category is empty!" })
-//                     }
-//                     else return res.status(404).send({ status: false, msg: "category is required!" })
-//                 }
-//                 else return res.status(404).send({ status: false, msg: "tags are empty!" })
-//             }
-//             else return res.status(400).send({ status: false, msg: "authorId is invalid!" })
-//         }
-//         else res.status(400).send({ status: false, msg: "authorId is required!" })
-//     }
-//     catch (err) {
-//         console.log("This is the error:", err.message)
-//         return res.status(500).send({ msg: "Error", error: err.message })
-//     }
-// }
-
-//<=======why the express validator is not reading the data stored in array of strings...to be precise it is only returning one input i.e ignoring the other inputs....?================================>//
-
-//<==========================how to change the error status code coming from the validator/express validator..?=========================>
-
-//<==============our password is not unique but still it is shwoing duplicate key validation with a server error...?===================>
-
-//<=============what should be the status code if from schema a single key's value is empty ?============================>
-
-//<==============how to validate if a key is present but its value is empty....? =======================================>
-
-//<====when we are inputing invalid key name in query params, code fat jata hai aur error catch mein store nhi hota hai..how to resolve..?==>
 
 
 const getAllBlogs = async function (req, res) {
@@ -99,10 +50,7 @@ const getAllBlogs = async function (req, res) {
 
         // if ( Object.keys(tags.tags).length === 0) { return res.status(404).send({ status: false, msg: "tags are empty!" }) }
 
-        //<==========when we are trying fetch data without tags...its showing error?==========================================>//  
-        //<======================why .length is making the presence of the key's value compulsory ?========================================>//
-
-        let authorId = req.query.authorId
+               let authorId = req.query.authorId
 
         if (!isValidObjectId(authorId)) {
             return res.status(400).send({ status: false, msg: "authorId is invalid!" })

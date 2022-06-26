@@ -14,7 +14,7 @@ const createAuthor = async function (req, res) {
         if (duplicatePassword) {
             return res.status(400).send({ status: false, msg:`${data.password} password is already taken!` });
         }
-        if (!data.title.enum) return res.status(404).send({ status: false, msg: "Title is missing or mismatched!" })
+        // if (!data.title.enum) return res.status(404).send({ status: false, msg: "Title is missing or mismatched!" })
         if (Object.keys(data).length != 0) {
             let savedData = await authorModel.create(data)
             return res.status(201).send({ status: true, data: savedData })
