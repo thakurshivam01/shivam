@@ -179,12 +179,6 @@ const updateBlog = async function (req, res) {
 
         if (blogvalid.authorId.toString() !== authorToken) { return res.status(401).send({ status: false, message: "Unauthorised access" }) }
 
-<<<<<<< HEAD
-        let data = req.body;
-
-        // if (!data.length) { return res.status(400).send({ msg: "Please provide something to update!" }) }
-=======
->>>>>>> 055859b3ebe16bd5ee13aa30f2a862414f5e4136
 
         // let updateData = { PublishedAt: new Date(), isPublished: true }
         // updateData.$addToSet={tags:req.body.tags}
