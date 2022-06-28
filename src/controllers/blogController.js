@@ -65,7 +65,7 @@ const getAllBlogs = async function (req, res) {
     try {
         let {tags,category,authorId,subcategory} = req.query
 
-        if(Object.keys(req.body).length === 0)  return res.status(400).send({ status: false, msg: "please input something!"}) 
+        if(Object.keys(req.query).length === 0)  return res.status(400).send({ status: false, msg: "please input something!"}) 
 
         if (tags === "") {
             if (!isValidArray(tags)) {
@@ -81,10 +81,14 @@ const getAllBlogs = async function (req, res) {
         }
 
 
-         if (!objectValue(category)) { res.status(400).send({ status: false, msg: "Please input category!" }) }
+        if ( catagery === "") {
+            if (!isValidArray(subcategory)) {
+                return res.status(400).send({ status: false, msg: "subcategory is empty!" })
+            }
+        }
        
 
-        if (subcategory || subcategory === "") {
+        if ( subcategory === "") {
             if (!isValidArray(subcategory)) {
                 return res.status(400).send({ status: false, msg: "subcategory is empty!" })
             }
