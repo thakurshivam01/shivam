@@ -31,7 +31,7 @@ const createcollege = async function (req, res) {
 
         if (Object.keys(data).length != 0) {
             let savedData = await collegeModel.create(data)
-            let details = savedData.filter(x=> x= name, fullName, logoLink, isDeleted)
+          //  let details = savedData.filter(x=> x= name, fullName, logoLink, isDeleted)
             return res.status(201).send({ status: true, data: details })
         }
         else return res.status(400).send({ status: false, message: "Provide with your details" })
