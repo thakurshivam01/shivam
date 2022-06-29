@@ -19,7 +19,7 @@ const collegeSchema = new mongoose.Schema({
         type: Boolean,
         default:false
     },
-}, { timestamps: true });
+});
 
 
 module.exports = mongoose.model('Project_College', collegeSchema) 
