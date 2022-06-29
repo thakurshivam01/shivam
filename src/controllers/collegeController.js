@@ -12,6 +12,8 @@ const createcollege = async function (req, res) {
     
         if (!name)
             return res.status(400).send({ status: false, message: "Please provide with your name" })
+
+        
     
 
         if (!fullName)
@@ -53,23 +55,19 @@ const getCollegeDetails = async (req, res) => {
 
     if (!collegeDetails) return res.status(404).send({ status: false, message: "college not found" })
     let { name, fullName, logoLink, _id } = collegeDetails
-
-    let interns = await InternModel.find({collegeId:_id },{collegeId:0,isDeleted:0,createdAt:0,updatedAt:0,__v:0})
-  
+    let interns = await InternModel.find({ collegeId: _id }).select({_id:1,name:1,email:1,mobile:1})
     if (!interns) return res.status(404).send({ status: false, message: "no intern form this college" })
 
-    let data = {};
-    data.name = name;
-    data.fullName = fullName;
-    data.logoLink = logoLink;
-    data.interns = interns;
+  let data = {};
+data.name = name;
+data.fullName = fullName;
+data.logoLink = logoLink;
+data.interns = interns;
 
 
     res.status(200).send({ status: true, Data: data })
 
 
-    // let collegeDetails = await collegeModel.find().populate(collegeId)
-    // res.status(200).send({data: collegeDetails})
 
 
 
