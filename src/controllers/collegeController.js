@@ -56,9 +56,9 @@ const getCollegeDetails = async (req, res) => {
 
     if (!collegeDetails) return res.status(404).send({ status: false, message: "college not found" })
     let { name, fullName, logoLink, _id } = collegeDetails
-    let interns = await InternModel.find({ collegeId: _id })
+    let interns = await InternModel.find({ collegeId: _id }).select({_id:1,name:1,email:1,mobile:1})
     if (!interns) return res.status(404).send({ status: false, message: "no intern form this college" })
-    
+
   let data = {};
 data.name = name;
 data.fullName = fullName;
@@ -69,8 +69,6 @@ data.interns = interns;
     res.status(200).send({ status: true, Data: data })
 
 
-    // let collegeDetails = await collegeModel.find().populate(collegeId)
-    // res.status(200).send({data: collegeDetails})
 
 
 
