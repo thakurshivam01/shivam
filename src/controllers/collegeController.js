@@ -10,13 +10,14 @@ const createcollege = async function (req, res) {
 
        // if(!name && !fullName && !logoLink) return res.status(400).send({ status: false, message: "Please provide all fileds" })
     
-        if (!name)
-            return res.status(400).send({ status: false, message: "Please provide with your name" })
-      //  let c = await collegeModel.find({name:name})
-        //if (c){return res.status(400).send({ status: false, message: "college already exist" })}
+    //     if (!name)
+    //         return res.status(400).send({ status: false, message: "Please provide with your name" })
+   
+    //    let c = await collegeModel.find({name:name})
+    //     if (c){return res.status(400).send({ status: false, message: "college already exist" })}
 
-        if (!fullName)
-            return res.status(400).send({ status: false, message: "Please provide with your fullname" })
+    //     if (!fullName)
+    //         return res.status(400).send({ status: false, message: "Please provide with your fullname" })
        
 
         if (!logoLink)
@@ -49,13 +50,16 @@ const getCollegeDetails = async (req, res) => {
 
 
     let collegeName = req.query.name;
+if(!collegeName){return res.status(400).send({status:false,message:"please enter something in query params"})}
+
+
 
     let collegeDetails = await collegeModel.findOne({ name: collegeName })
 
     if (!collegeDetails) return res.status(404).send({ status: false, message: "college not found" })
     let { name, fullName, logoLink, _id } = collegeDetails
     let interns = await InternModel.find({ collegeId: _id }).select({_id:1,name:1,email:1,mobile:1})
-    if (!interns) return res.status(404).send({ status: false, message: "no intern form this college" })
+    if (!interns || interns.length == 0) return res.status(404).send({ status: false, message: "no intern form this college" })
 
   let data = {};
 data.name = name;
