@@ -8,11 +8,12 @@ const createcollege = async function (req, res) {
         let data = req.body;
         let { name, fullName, logoLink} = data
 
-        if(!name && !fullName && logoLink) return res.status(400).send({ status: false, message: "Please provide all fileds" })
+        if(!name && !fullName && !logoLink) return res.status(400).send({ status: false, message: "Please provide all fileds" })
     
         if (!name)
             return res.status(400).send({ status: false, message: "Please provide with your name" })
-    
+        let c = await collegeModel.find({name:name})
+        if (c){return res.status(400).send({ status: false, message: "college already exist" })}
 
         if (!fullName)
             return res.status(400).send({ status: false, message: "Please provide with your fullname" })

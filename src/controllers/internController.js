@@ -16,11 +16,11 @@ const createInterns = async (req, res) => {
 
         if (!/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(email)) return res.status(400).send({ status: false, msg: "Please fill a valid email address " })
 
-        if (!mobile) return res.status(400).send({ status: false, message: "Please provide mobile number" })
+        // if (!mobile) return res.status(400).send({ status: false, message: "Please provide mobile number" })
 
-        mobile = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(mobile);
+        // mobile = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(mobile);
 
-        if (!mobile) return res.status(400).send({ status: false, message: "Please provide valid moblie number" })
+        // if (!mobile) return res.status(400).send({ status: false, message: "Please provide valid moblie number" })
 
         if (!collegeName) return res.status(400).send({ status: false, message: "Please provide collegeId" })
 
@@ -33,8 +33,8 @@ const createInterns = async (req, res) => {
         if (!college) { res.status(404).send({ msg: "no such college exist" }) }
 
         let id = college._id
-        console.log(college)
-        console.log(id)
+        // console.log(college)
+        // console.log(id)
         let daata = {};
         daata.name = name;
         daata.email = email;
