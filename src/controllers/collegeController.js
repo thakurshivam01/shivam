@@ -6,20 +6,17 @@ const InternModel = require("../models/InternModel");
 const createcollege = async function (req, res) {
     try {
         let data = req.body;
-        let { name, fullName, logoLink, isDeleted } = data
+        let { name, fullName, logoLink} = data
+
+        if(!name && !fullName && logoLink) return res.status(400).send({ status: false, message: "Please provide all fileds" })
+    
         if (!name)
             return res.status(400).send({ status: false, message: "Please provide with your name" })
-        // name = /^[a-z.A-Z]{2,15}$/.test(name)
-        // if(!name)
-        // return res.status(400).send({status:false, message:"Please use alphabates only and maximum length should be 15"})
-
+    
 
         if (!fullName)
             return res.status(400).send({ status: false, message: "Please provide with your fullname" })
-        // fullName = /^[a-z].A-Z{2,25}$/.test(fullName)
-        // if(!fullName)
-        // return res.status(400).send({status:false, message:"Please use alphabates only and maximum length should be 25"})
-
+       
 
         if (!logoLink)
             return res.status(400).send({ status: false, message: "Please provide LogoLink" })
@@ -31,8 +28,13 @@ const createcollege = async function (req, res) {
 
         if (Object.keys(data).length != 0) {
             let savedData = await collegeModel.create(data)
-          //  let details = savedData.filter(x=> x= name, fullName, logoLink, isDeleted)
-            return res.status(201).send({ status: true, data: details })
+            let { name, fullName, logoLink, isDeleted } = savedData;
+            let answer = {};
+            answer.name = name;
+            answer.fullName = fullName;
+            answer.logoLink = logoLink;
+            answer.isDeleted = isDeleted
+            return res.status(201).send({ status: true, data: answer })
         }
         else return res.status(400).send({ status: false, message: "Provide with your details" })
     }
@@ -51,16 +53,19 @@ const getCollegeDetails = async (req, res) => {
 
     if (!collegeDetails) return res.status(404).send({ status: false, message: "college not found" })
     let { name, fullName, logoLink, _id } = collegeDetails
-    let interns = await InternModel.find({ collegeId: _id })
-    if (!interns) return res.status(404).send({ status: false, message: "no intern form this college" })
-    let data = {}
-    data.name
-    data.fullName
-    data.logoLink
-    data.interns
-    console.log(data)
 
-    res.status(200).send({ status: true, Data: data , collegeDetails,interns})
+    let interns = await InternModel.find({collegeId:_id },{collegeId:0,isDeleted:0,createdAt:0,updatedAt:0,__v:0})
+  
+    if (!interns) return res.status(404).send({ status: false, message: "no intern form this college" })
+
+    let data = {};
+    data.name = name;
+    data.fullName = fullName;
+    data.logoLink = logoLink;
+    data.interns = interns;
+
+
+    res.status(200).send({ status: true, Data: data })
 
 
     // let collegeDetails = await collegeModel.find().populate(collegeId)
