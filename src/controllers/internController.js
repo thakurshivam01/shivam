@@ -23,11 +23,22 @@ const createInterns = async (req, res) => {
         if (!collegeId) return res.status(400).send({ status: false, message: "Please provide collegeId" })
 
         if (!mongoose.isValidObjectId(collegeId)) return res.status(400).send({ status: false, message: "please enter valid collegeId" });
-
+      
 
         if (Object.keys(data).length != 0) {
             let savedData = await internModel.create(data)
-            return res.status(201).send({ status: true, data: savedData })
+
+            const {isDeleted,name,email,mobile,collegeId} = savedData;
+
+            let answer = {}
+
+            answer.isDeleted = isDeleted;
+            answer.name = name;
+            answer.email = email;
+            answer.mobile = mobile;
+            answer.collegeId = collegeId;
+            
+            return res.status(201).send({ status: true, data: answer })
         }
         else return res.status(400).send({ status: false, message: "Provide with your details" })
     } catch (err) {

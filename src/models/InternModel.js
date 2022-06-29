@@ -20,12 +20,12 @@ const internSchema = new mongoose.Schema({
     },
     collegeId: {
         type: ObjectId,
-        ref: "Project_College",
+        ref: "Project_College"},
     isDeleted: {
         type: Boolean,
         default: false
     }
-}
-});
+
+},{timestamps :true});
 
 module.exports = mongoose.model('Project_Intern', internSchema) 

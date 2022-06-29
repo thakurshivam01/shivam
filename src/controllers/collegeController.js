@@ -31,8 +31,13 @@ const createcollege = async function (req, res) {
 
         if (Object.keys(data).length != 0) {
             let savedData = await collegeModel.create(data)
-            let details = savedData.filter(x=> x= name, fullName, logoLink, isDeleted)
-            return res.status(201).send({ status: true, data: details })
+            let {name,fullName,logoLink,isDeleted} = savedData;
+           let answer = {};
+           answer.name = name;
+           answer.fullName = fullName;
+           answer.logoLink = logoLink;
+           answer.isDeleted = isDeleted
+            return res.status(201).send({ status: true, data: answer })
         }
         else return res.status(400).send({ status: false, message: "Provide with your details" })
     }
@@ -53,14 +58,15 @@ const getCollegeDetails = async (req, res) => {
     let { name, fullName, logoLink, _id } = collegeDetails
     let interns = await InternModel.find({ collegeId: _id })
     if (!interns) return res.status(404).send({ status: false, message: "no intern form this college" })
-    let data = {}
-    data.name
-    data.fullName
-    data.logoLink
-    data.interns
-    console.log(data)
+    
+  let data = {};
+data.name = name;
+data.fullName = fullName;
+data.logoLink = logoLink;
+data.interns = interns;
 
-    res.status(200).send({ status: true, Data: data , collegeDetails,interns})
+
+    res.status(200).send({ status: true, Data: data })
 
 
     // let collegeDetails = await collegeModel.find().populate(collegeId)
