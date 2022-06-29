@@ -10,7 +10,8 @@ const internSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique:true
+        unique:true,
+        match: [/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/,"Please fill a valid email address", ]
     },
     mobile: {
         type: Number,
@@ -21,7 +22,7 @@ const internSchema = new mongoose.Schema({
         type: ObjectId,
         ref: "Project_College",
     isDeleted: {
-        type: boolean,
+        type: Boolean,
         default: false
     }
 }

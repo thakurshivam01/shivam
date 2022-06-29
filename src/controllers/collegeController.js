@@ -1,22 +1,21 @@
-const e = require("express")
-const jwt = require("jsonwebtoken")
+
 const collegeModel = require("../models/collegeModel")
 
 
 const createcollege = async function (req, res) {
     try {
         let data= req.body;
-        const {name,fullName,logoLink}=data
+        let {name,fullName,logoLink}=data
         if(!name)
         return res.status(400).send({status:false,msg:"Please provide with your name"})
-        name = /^[a-z]{2,15}$/.test(name)
+        name = /^[a-z.A-Z]{2,15}$/.test(name)
         if(!name)
         return res.status(400).send({status:false,msg:"Please use alphabates only and maximum length should be 15"})
 
 
         if(!fullName)
         return res.status(400).send({status:false,msg:"Please provide with your fullname"})
-        fullName = /^[a-z]{2,25}$/.test(fullName)
+        fullName = /^[a-z].A-Z{2,25}$/.test(fullName)
         if(!fullName)
         return res.status(400).send({status:false,msg:"Please use alphabates only and maximum length should be 25"})
 
@@ -31,7 +30,7 @@ const createcollege = async function (req, res) {
       
         if (Object.keys(data).length != 0) {
             let savedData = await collegeModel.create(data)
-            return res.status(201).send({ status: true, data: savedData })
+            return res.status(201).send({ status: true, msg: "college created successfully", data: savedData })
         }
         else return res.status(400).send({ status: false, msg: "Provide with your details"})
     }
