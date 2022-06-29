@@ -6,7 +6,7 @@ const InternModel = require("../models/InternModel");
 const createcollege = async function (req, res) {
     try {
         let data = req.body;
-        let { name, fullName, logoLink } = data
+        let { name, fullName, logoLink, isDeleted } = data
         if (!name)
             return res.status(400).send({ status: false, message: "Please provide with your name" })
         // name = /^[a-z.A-Z]{2,15}$/.test(name)
@@ -31,7 +31,8 @@ const createcollege = async function (req, res) {
 
         if (Object.keys(data).length != 0) {
             let savedData = await collegeModel.create(data)
-            return res.status(201).send({ status: true, data: savedData })
+            let details = savedData.filter(x=> x= name, fullName, logoLink, isDeleted)
+            return res.status(201).send({ status: true, data: details })
         }
         else return res.status(400).send({ status: false, message: "Provide with your details" })
     }
@@ -59,7 +60,7 @@ const getCollegeDetails = async (req, res) => {
     data.interns
     console.log(data)
 
-    res.status(200).send({ status: true, Data: data , collegeDetails})
+    res.status(200).send({ status: true, Data: data , collegeDetails,interns})
 
 
     // let collegeDetails = await collegeModel.find().populate(collegeId)
