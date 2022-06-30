@@ -11,29 +11,34 @@ const createInterns = async (req, res) => {
         let data = req.body;
         let { name, email, mobile, collegeName } = data;
 
+        if (!name && !email && !mobile && !collegeName) return res.status(400)
+
         if (!name) return res.status(400).send({ status: false, message: "Please provide with your name" })
 
         if (!email) return res.status(400).send({ status: false, message: "Please provide with your emailId" })
 
         if (!/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(email)) return res.status(400).send({ status: false, msg: "Please fill a valid email address " })
 
-         if (!mobile) return res.status(400).send({ status: false, message: "Please provide mobile number" })
-
-        // mobile = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(mobile);
-
-        // if (!mobile) return res.status(400).send({ status: false, message: "Please provide valid moblie number" })
-
-        // if (!collegeId) return res.status(400).send({ status: false, message: "Please provide collegeId" })
-
-        // if (!mongoose.isValidObjectId(collegeId)) return res.status(400).send({ status: false, message: "please enter valid collegeId" });
-        let isDupEmail = await internModel.find({email: email})
-        if(isDupEmail) return res.status(400).send({ status: false, msg: "Email already exists" })
-
-        if (Object.keys(data).length = 0) { res.status(400).send({ status: false, message: "empty request recieved" }) }
+        if (!mobile) return res.status(400).send({ status: false, message: "Please provide mobile number" })
 
         let college = await collegeModel.findOne({ name: collegeName });
-        if (!college) { res.status(404).send({ msg: "no such college exist" }) }
 
+        if (!college) { res.status(404).send({ status: false, msg: "no such college exist" }) }
+
+        if (!/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(mobile)) return res.status(400).send({ status: false, message: "Please provide valid moblie number" })
+
+        
+        const isPresentMobile = await internModel.findOne({ mobile });
+
+        if (isPresentMobile) return res.status(400).send({ status: false, msg: "AlReady Present Mobile Number" })
+        
+
+        const isPresentEmail = await internModel.findOne({ email });
+
+        if (isPresentEmail) return res.status(400).send({ status: false, msg: "AlReady Present Emaild" })
+
+        if
+      
         let id = college._id
         // console.log(college)
         // console.log(id)
@@ -57,7 +62,7 @@ const createInterns = async (req, res) => {
 
         return res.status(201).send({ status: true, data: answer })
 
-       // return res.status(400).send({ status: false, message: "Provide with your details" })
+        // return res.status(400).send({ status: false, message: "Provide with your details" })
     }
     catch (err) {
         return res.status(500).send({ status: false, message: err.message })
