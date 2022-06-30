@@ -40,7 +40,7 @@ const createcollege = async function (req, res) {
 
         // -----------validations Logilink extension -----------------------------//
 
-        if (!/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(logoLink)) return res.status(400).send({ status: false, message: "Please enter LogoLink extension." })
+        if (!/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(logoLink)) return res.status(400).send({ status: false, message: "Please enter  valid LogoLink  extension." })
 
         //--------------- valid logolink url format ------------//
         logoLink = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(logoLink)
@@ -73,7 +73,7 @@ const createcollege = async function (req, res) {
 
             return res.status(201).send({ status: true, data: answer })
         }
-        else return res.status(400).send({ status: false, message: "Provide  your details" }) ///if request body is empty
+       
     }
     catch (err) {
         return res.status(500).send({ status: false, message: err.message })
@@ -109,7 +109,7 @@ const getCollegeDetails = async (req, res) => {
         //----------------------creating object to be send in response-------------//
         collegeDetails.interns = interns;
 
-        res.status(200).send({ status: true, Data: collegeDetails })
+       return res.status(200).send({ status: true, Data: collegeDetails })
     }
     catch (err) {
         return res.status(500).send({ status: false, message: err.message })

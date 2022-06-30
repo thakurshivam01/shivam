@@ -28,7 +28,7 @@ const createInterns = async (req, res) => {
 
                 if (!email) return res.status(400).send({ status: false, message: "Please enter your emailId" })
 
-                if (!/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(email)) return res.status(400).send({ status: false, msg: "Please enter a valid email address " })
+                if (!/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(email)) return res.status(400).send({ status: false, message: "Please enter a valid email address " })
                 //_______________________________________________ mobile validation____________________________________________//
 
                 if (!mobile) return res.status(400).send({ status: false, message: "Please provide mobile number" })
@@ -37,16 +37,18 @@ const createInterns = async (req, res) => {
                 //_______________________________________validations for duplicate value____________________________//
 
                 const isPresentMobile = await internModel.findOne({ mobile });
-                if (isPresentMobile) return res.status(400).send({ status: false, msg: " Mobile Number already in use" })
+                if (isPresentMobile) return res.status(400).send({ status: false, message: " Mobile Number already in use" })
 
                 const isPresentEmail = await internModel.findOne({ email });
-                if (isPresentEmail) return res.status(400).send({ status: false, msg: " EmailId already in use" })
+                if (isPresentEmail) return res.status(400).send({ status: false, message: " EmailId already in use" })
 
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^validation finished^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^//
 
                 ///_______________________________searching details of college using collegeName provided in request body______________//
+              
                 let college = await collegeModel.findOne({ name: collegeName });
-                if (!college) { res.status(404).send({ status: false, msg: "No such college exist" }) }
+
+                if (!college) { return res.status(404).send({ status: false, message: "No such college exist" }) }
 
                 //           ------------destructure of id field from the details of college found ----------------------//
 
