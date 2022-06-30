@@ -26,13 +26,24 @@ const createcollege = async function (req, res) {
         if (!fullName)
             return res.status(400).send({ status: false, message: "Please enter your fullname" })
 
-        ///------------------LOGO LINK VALIDATION------------------------------------------/
+        //-------- validations only alphabet name and fullname -----------//
 
+        if (!/^[a-z]+$/.test(name)) return res.status(400).send({ status: false, message: "Please enter only alphabet & lower case (name)." })
+
+        if (!/^[A-Za-z]+$/.test(fullName)) return res.status(400).send({ status: false, message: "Please enter only alphabet (fullName)." })
+
+
+        ///------------------LOGO LINK VALIDATION------------------------------------------/
 
         if (!logoLink)
             return res.status(400).send({ status: false, message: "Please enter LogoLink" })
-        logoLink = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(logoLink)
 
+        // -----------validations Logilink extension -----------------------------//
+
+        if (!/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(logoLink)) return res.status(400).send({ status: false, message: "Please enter  valid LogoLink  extension." })
+
+        //--------------- valid logolink url format ------------//
+        logoLink = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(logoLink)
         if (!logoLink)
             return res.status(400).send({ status: false, message: "Please ensure that you have entered correct url link" })
 
@@ -62,7 +73,7 @@ const createcollege = async function (req, res) {
 
             return res.status(201).send({ status: true, data: answer })
         }
-        else return res.status(400).send({ status: false, message: "Provide  your details" }) ///if request body is empty
+       
     }
     catch (err) {
         return res.status(500).send({ status: false, message: err.message })
@@ -77,7 +88,6 @@ const createcollege = async function (req, res) {
 const getCollegeDetails = async (req, res) => {
     try {
 
-
         let collegeName = req.query.collegeName;
         // ------------------- empty field validation---------------------------//
 
@@ -85,11 +95,11 @@ const getCollegeDetails = async (req, res) => {
 
         //--------------------validation for college name --------------------//
 
-        let collegeDetails = await collegeModel.findOne({ name: collegeName })
+        let collegeDetails = await collegeModel.findOne({ name: collegeName },{createdAt: 0, updatedAt:0,__v:0,isDeleted:0}).lean();
         if (!collegeDetails) return res.status(404).send({ status: false, message: "college not found" })
 
         //----------------destructure of object of college details------------//
-        let { name, fullName, logoLink, _id } = collegeDetails
+        let _id  = collegeDetails
 
         //-------------------searching intern from this college-------------//
 
@@ -97,20 +107,13 @@ const getCollegeDetails = async (req, res) => {
         if (!interns || interns.length == 0) return res.status(404).send({ status: false, message: "no intern from this college" })
 
         //----------------------creating object to be send in response-------------//
-        let data = {};
-        data.name = name;
-        data.fullName = fullName;
-        data.logoLink = logoLink;
-        data.interns = interns;
-        res.status(200).send({ status: true, Data: data })
+        collegeDetails.interns = interns;
+
+       return res.status(200).send({ status: true, Data: collegeDetails })
     }
-
-
     catch (err) {
         return res.status(500).send({ status: false, message: err.message })
     }
-
-
 }
 //********************************************************************************************************************************** */
 
