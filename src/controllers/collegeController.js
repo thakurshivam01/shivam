@@ -9,15 +9,11 @@ const createcollege = async function (req, res) {
         let { name, fullName, logoLink } = data
 
         if (!name && !fullName && !logoLink) return res.status(400).send({ status: false, message: "Please provide all fileds" })
-
         if (!name)
             return res.status(400).send({ status: false, message: "Please provide with your name" })
-        //  let c = await collegeModel.find({name:name})
-        //if (c){return res.status(400).send({ status: false, message: "college already exist" })}
 
         if (!fullName)
             return res.status(400).send({ status: false, message: "Please provide with your fullname" })
-
 
         if (!logoLink)
             return res.status(400).send({ status: false, message: "Please provide LogoLink" })
@@ -27,11 +23,14 @@ const createcollege = async function (req, res) {
             return res.status(400).send({ status: false, message: "Please ensure that you have entered correct url link" })
 
 
-        let isDuplicetName = await collegeModel.find({ name: name })
-        if (isDuplicetName) { return res.status(400).send({ status: false, message: "college already exist" }) }
+        let isDuplicetName = await collegeModel.findOne({ name })
+        if (isDuplicetName) return res.status(400).send({ status: false, message: "college already exist" })
 
+        let isDuplicetFullName = await collegeModel.findOne({ fullName })
+        if (isDuplicetFullName) return res.status(400).send({ status: false, message: "FullName already exist" })
 
         if (Object.keys(data).length != 0) {
+            
             let savedData = await collegeModel.create(data)
             let { name, fullName, logoLink, isDeleted } = savedData;
             let answer = {};
@@ -49,20 +48,20 @@ const createcollege = async function (req, res) {
 }
 
 const getCollegeDetails = async (req, res) => {
-
-
     try {
+
+
         let collegeName = req.query.collegeName;
+        if (!collegeName) { return res.status(400).send({ status: false, message: "please enter something in query params" }) }
+
+
 
         let collegeDetails = await collegeModel.findOne({ name: collegeName })
 
         if (!collegeDetails) return res.status(404).send({ status: false, message: "college not found" })
-
         let { name, fullName, logoLink, _id } = collegeDetails
-
         let interns = await InternModel.find({ collegeId: _id }).select({ _id: 1, name: 1, email: 1, mobile: 1 })
-
-        if (!interns) return res.status(404).send({ status: false, message: "no intern form this college" })
+        if (!interns || interns.length == 0) return res.status(404).send({ status: false, message: "no intern form this college" })
 
         let data = {};
         data.name = name;
@@ -73,10 +72,11 @@ const getCollegeDetails = async (req, res) => {
 
         res.status(200).send({ status: true, Data: data })
     }
+
+
     catch (err) {
         return res.status(500).send({ status: false, message: err.message })
     }
-
 
 
 }

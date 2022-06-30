@@ -4,7 +4,7 @@ const { getCollegeDetails } = require("./collegeController");
 const collegeModel = require("../models/collegeModel");
 const { emit } = require("../models/collegeModel");
 
-const createInterns = async (req, res) => {
+const createInterns = async (req, res) =>  {
 
     try {
 
@@ -22,12 +22,11 @@ const createInterns = async (req, res) => {
         if (!mobile) return res.status(400).send({ status: false, message: "Please provide mobile number" })
 
         let college = await collegeModel.findOne({ name: collegeName });
-
+        
         if (!college) { res.status(404).send({ status: false, msg: "no such college exist" }) }
 
         if (!/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(mobile)) return res.status(400).send({ status: false, message: "Please provide valid moblie number" })
 
-        
         const isPresentMobile = await internModel.findOne({ mobile });
 
         if (isPresentMobile) return res.status(400).send({ status: false, msg: "AlReady Present Mobile Number" })
@@ -36,8 +35,6 @@ const createInterns = async (req, res) => {
         const isPresentEmail = await internModel.findOne({ email });
 
         if (isPresentEmail) return res.status(400).send({ status: false, msg: "AlReady Present Emaild" })
-
-        if
       
         let id = college._id
         // console.log(college)
@@ -68,6 +65,8 @@ const createInterns = async (req, res) => {
         return res.status(500).send({ status: false, message: err.message })
     }
 }
+
+   
 
 
 
