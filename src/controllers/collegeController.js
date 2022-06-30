@@ -18,10 +18,11 @@ const createcollege = async function (req, res) {
         return res.status(400).send({ status: false, message: "Please enter your name" })
       name = name.toLowerCase()
 
-      let l = await collegeModel.findOne({logoLink:logoLink})
-      if(l){res.status(400).send({status:false,message:"logo already in use"})}
+     
         if (!fullName)
             return res.status(400).send({ status: false, message: "Please enter your fullname" })
+            let l = await collegeModel.findOne({logoLink:logoLink})
+            if(l){res.status(400).send({status:false,message:"logo already in use"})}
 
         ///------------------LOGO LINK VALIDATION------------------------------------------/
 
@@ -40,6 +41,7 @@ const createcollege = async function (req, res) {
 
         let isDuplicetFullName = await collegeModel.findOne({ fullName })
         if (isDuplicetFullName) return res.status(400).send({ status: false, message: "college with this FullName already exist" })
+        
 
         ////          ^^^^^^^^^^^^^^^ validation process finished     ^^^^^^^^^^^^^^^^            /////
 
