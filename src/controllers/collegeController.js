@@ -7,7 +7,7 @@ const createcollege = async function (req, res) {
     try {
         let data = req.body;
         let { name, fullName, logoLink} = data
-
+        
        // if(!name && !fullName && !logoLink) return res.status(400).send({ status: false, message: "Please provide all fileds" })
     
         if (!name)

@@ -10,7 +10,7 @@ const createInterns = async (req, res) => {
 
         let data = req.body;
         let { name, email, mobile, collegeName } = data;
-
+        
         if (!name) return res.status(400).send({ status: false, message: "Please provide with your name" })
 
         if (!email) return res.status(400).send({ status: false, message: "Please provide with your emailId" })
