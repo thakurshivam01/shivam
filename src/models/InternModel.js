@@ -6,29 +6,30 @@ const internSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim : true
+        trim: true
     },
     email: {
         type: String,
         required: true,
-        unique:true,
-        match: [/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/,"Please fill a valid email address", ],
-        trim : true
+        unique: true,
+        match: [/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/, "Please fill a valid email address",],
+        trim: true
     },
     mobile: {
         type: String,
-        unique:true,
+        unique: true,
         required: true,
-        trim : true
+        trim: true
     },
     collegeId: {
         type: ObjectId,
-        ref: "Project_College"},
+        ref: "Project_College"
+    },
     isDeleted: {
         type: Boolean,
         default: false
     }
 
-},{timestamps :true});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Project_Intern', internSchema) 
