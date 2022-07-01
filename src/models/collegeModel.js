@@ -5,12 +5,13 @@ const collegeSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        trim: true
+        lowercase:true,
+        trim: true,
+      
     },
     fullName: {
         type: String,
-        required: true,
-        trim: true
+        required: true
     },
     logoLink: {
         type: String,

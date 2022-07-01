@@ -22,7 +22,7 @@ const createInterns = async (req, res) => {
 
                 //------------- validations only alphabet name and fullname -----------//
 
-                if (!/^[A-Za-z]+$/.test(name)) return res.status(400).send({ status: false, message: "Please enter only alphabet (name)." })
+                if (!/^[A-Z a-z]+$/.test(name)) return res.status(400).send({ status: false, message: "Please enter only alphabet (name)." })
 
                 //__________________________________________email validation_________________________________________//
 
